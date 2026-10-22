@@ -1,0 +1,29 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "ordinate",
+  "version": "0.1.0",
+  "description": "Answer questions over your Ordinate projects' documents, email, drawings and schedules, with citations. All tools are read-only.",
+  "author": {
+    "name": "Aline AI",
+    "url": "https://ordinate.app"
+  },
+  "homepage": "https://ordinate.app",
+  "repository": "https://github.com/aline-ai-dev/ordinate-plugin",
+  "license": "MIT",
+  "keywords": ["ordinate", "projects", "documents", "email", "drawings", "schedule"],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Ordinate",
+        "shortDescription": "Project evidence from Ordinate",
+        "longDescription": "Ordinate answers questions over a project's documents, email, drawings and schedules with citations. This plugin lets you list your Ordinate projects, search and read project documents and email threads, query the schedule, procurement, task worklist and authority submissions, search the drawing register and contract clauses, and search your firm library and licensed standards. It is for existing Ordinate customers whose organization has MCP turned on; other accounts see an empty project list with a note. All tools are read-only: the plugin never changes data in Ordinate.",
+        "developerName": "Aline AI",
+        "websiteURL": "https://ordinate.app",
+        "composerIcon": "./assets/icon-light.png",
+        "composerIconDark": "./assets/icon-dark.png",
+        "logo": "./assets/icon-light.png",
+        "logoDark": "./assets/icon-dark.png"
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "ordinate": {
+      "type": "http",
+      "url": "https://go.ordinate.app/api/mcp"
+    }
+  }
+}

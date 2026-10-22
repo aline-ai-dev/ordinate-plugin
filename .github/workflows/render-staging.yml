@@ -1,0 +1,54 @@
+name: render-staging
+
+# Pushes the ordinate-staging copy to the private internal marketplace on every
+# push to main. Never runs on pull requests, so forks never see the deploy key.
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: render-staging
+  cancel-in-progress: false
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require deploy key
+        env:
+          KEY: ${{ secrets.INTERNAL_MARKETPLACE_DEPLOY_KEY }}
+        run: |
+          if [ -z "$KEY" ]; then
+            echo "Secret INTERNAL_MARKETPLACE_DEPLOY_KEY is not set; add the write deploy key for aline-ai-dev/ordinate-plugin-internal." >&2
+            exit 1
+          fi
+      - uses: actions/checkout@v4
+        with:
+          path: plugin
+      - uses: actions/checkout@v4
+        with:
+          repository: aline-ai-dev/ordinate-plugin-internal
+          ssh-key: ${{ secrets.INTERNAL_MARKETPLACE_DEPLOY_KEY }}
+          path: internal
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm i -g @anthropic-ai/claude-code
+      - run: bash plugin/scripts/render-staging.sh internal
+      - run: claude plugin validate internal
+      - name: Commit and push when changed
+        working-directory: internal
+        run: |
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Render ordinate-staging from ordinate-plugin@${GITHUB_SHA::7}"
+          git push

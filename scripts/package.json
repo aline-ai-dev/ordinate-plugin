@@ -1,0 +1,10 @@
+{
+  "name": "ordinate-plugin-scripts",
+  "private": true,
+  "type": "module",
+  "description": "Development checks for the Ordinate plugin package. Not part of the plugin.",
+  "devDependencies": {
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1"
+  }
+}

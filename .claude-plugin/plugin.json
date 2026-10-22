@@ -1,0 +1,15 @@
+{
+  "name": "ordinate",
+  "displayName": "Ordinate",
+  "version": "0.1.0",
+  "description": "Answer questions over your Ordinate projects' documents, email, drawings and schedules, with citations. All tools are read-only.",
+  "author": {
+    "name": "Aline AI",
+    "url": "https://ordinate.app"
+  },
+  "homepage": "https://ordinate.app",
+  "repository": "https://github.com/aline-ai-dev/ordinate-plugin",
+  "license": "MIT",
+  "keywords": ["ordinate", "projects", "documents", "email", "drawings", "schedule"],
+  "icon": "./assets/icon-light.png"
+}
