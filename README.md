@@ -29,7 +29,7 @@ All tools are read-only. None of them create, change or delete data in Ordinate.
 
 ## Support
 
-TODO: add the Ordinate support contact before submission.
+For help, see https://ordinate.app/support or email hello@aline.sg. The privacy policy is at https://ordinate.app/privacy and the terms of service are at https://ordinate.app/terms.
 
 ## Development
 
