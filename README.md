@@ -6,6 +6,10 @@ Ordinate answers questions over a project's documents, email, drawings and sched
 
 The plugin is for existing Ordinate customers whose organization has MCP turned on in Ordinate. If your organization has not turned MCP on, you can still sign in, but the project list is empty and comes with a note explaining why.
 
+## Install
+
+In Claude, add Ordinate from the plugin directory on claude.ai or in Cowork. Claude Code loads it through account sync as `ordinate@synced`, so no install command is needed there.
+
 ## What the plugin connects to
 
 The plugin bundles one skill, described under [Skill](#skill), and no code or hooks. It declares one remote MCP server:
