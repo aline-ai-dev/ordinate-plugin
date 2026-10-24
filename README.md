@@ -8,7 +8,7 @@ The plugin is for existing Ordinate customers whose organization has MCP turned 
 
 ## What the plugin connects to
 
-The plugin bundles no code, skills or hooks. It declares one remote MCP server:
+The plugin bundles one skill, described under [Skill](#skill), and no code or hooks. It declares one remote MCP server:
 
 - Name: `ordinate`
 - URL: `https://go.ordinate.app/api/mcp`
@@ -26,6 +26,10 @@ All tools are read-only. None of them create, change or delete data in Ordinate.
 - Project state and schedule: `querySchedule`, `queryProcurement`, `queryAiduWorklist`, `queryAuthoritySubmissions`, `getProjectContext`
 - Drawings and contracts: `searchDrawings`, `searchContracts`
 - Library and standards: `searchLibrary`, `listLibraryResources`, `searchBuildingCode`
+
+## Skill
+
+The `ordinate-project-answers` skill lives in `skills/ordinate-project-answers/`. It guides the assistant when you ask about an Ordinate project: read the project context first, gather evidence across Ordinate's tools, cite the record IDs behind each claim, and state what it could not read or verify.
 
 ## Support
 
