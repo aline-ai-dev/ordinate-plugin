@@ -6,7 +6,7 @@ set -euo pipefail
 
 cd "$(dirname "$0")/.."
 
-FILES=(plugin.json mcp.json assets README.md LICENSE)
+FILES=(plugin.json mcp.json assets skills README.md LICENSE)
 version="$(node -p 'require("./plugin.json").version')"
 out="dist/ordinate-${version}.zip"
 

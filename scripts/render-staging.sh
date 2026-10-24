@@ -18,7 +18,7 @@ mkdir -p "$root"
 rm -rf "$plugin_dir"
 mkdir -p "$plugin_dir"
 cp -R "$src/plugin.json" "$src/mcp.json" "$src/.claude-plugin" "$src/.mcp.json" \
-  "$src/assets" "$src/README.md" "$src/LICENSE" "$plugin_dir/"
+  "$src/assets" "$src/skills" "$src/README.md" "$src/LICENSE" "$plugin_dir/"
 
 node - "$plugin_dir" "$root" <<'EOF'
 const fs = require("node:fs");
