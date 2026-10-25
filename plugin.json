@@ -2,7 +2,7 @@
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "ordinate",
   "version": "0.1.0",
-  "description": "Answer questions over your Ordinate projects' documents, email, drawings and schedules, with citations. All tools are read-only.",
+  "description": "Answer questions about your construction projects in Ordinate, across documents, email, drawings and schedules, with citations. All tools are read-only.",
   "author": {
     "name": "Aline AI",
     "url": "https://ordinate.app"
@@ -10,14 +10,23 @@
   "homepage": "https://ordinate.app",
   "repository": "https://github.com/aline-ai-dev/ordinate-plugin",
   "license": "MIT",
-  "keywords": ["ordinate", "projects", "documents", "email", "drawings", "schedule"],
+  "keywords": ["ordinate", "construction", "aec", "projects", "documents", "email", "drawings", "schedule"],
   "extensions": {
     "com.openai": {
       "interface": {
         "displayName": "Ordinate",
-        "shortDescription": "Project evidence from Ordinate",
-        "longDescription": "Ordinate answers questions over a project's documents, email, drawings and schedules with citations. This plugin lets you list your Ordinate projects, search and read project documents and email threads, query the schedule, procurement, task worklist and authority submissions, search the drawing register and contract clauses, and search your firm library and licensed standards. It is for existing Ordinate customers whose organization has MCP turned on; other accounts see an empty project list with a note. All tools are read-only: the plugin never changes data in Ordinate.",
+        "shortDescription": "Construction project answers",
+        "longDescription": "Ordinate is a project intelligence platform for architecture, engineering and construction (AEC) teams. It connects a building project's documents, email, drawings, programme and registers so project managers, architects, engineers and contractors can get cited answers about the project.\n\nUse this plugin to ask about the status of your construction projects without leaving ChatGPT. It can:\n- List the Ordinate projects your account can access.\n- Search and read project documents, such as meeting reports, specifications and transmittals.\n- Search and read project email threads.\n- Query the construction programme (schedule), procurement and deliveries, the action and issue worklist, and authority (regulatory) submissions.\n- Search the drawing register and contract clauses.\n- Search your firm library, licensed standards and building codes.\n\nEvery answer cites the Ordinate records behind it and states what could not be read or verified.\n\nWho it is for: existing Ordinate customers whose organization has turned on MCP access in Ordinate. You sign in with your Ordinate account through OAuth, and the plugin sees only the projects that account can access. Accounts in organizations without MCP access see an empty project list with a note that explains why.\n\nLimitations: all tools are read-only. The plugin cannot create, change or delete data in Ordinate, send email, or approve or submit anything. It reads message text, not email attachments, unless the same file is also filed as a project document.",
         "developerName": "Aline AI",
+        "category": "Productivity",
+        "capabilities": [
+          "List your Ordinate construction projects",
+          "Search and read project documents and meeting reports",
+          "Search and read project email threads",
+          "Query the programme, procurement, worklist and authority submissions",
+          "Search the drawing register and contract clauses",
+          "Search firm library, standards and building codes"
+        ],
         "websiteURL": "https://ordinate.app",
         "privacyPolicyURL": "https://ordinate.app/privacy",
         "termsOfServiceURL": "https://ordinate.app/terms",
@@ -26,6 +35,61 @@
         "composerIconDark": "./assets/icon-dark.png",
         "logo": "./assets/icon-light.png",
         "logoDark": "./assets/icon-dark.png"
+      },
+      "review": {
+        "test_cases": {
+          "positive": [
+            {
+              "description": "List the projects the signed-in account can access.",
+              "prompt": "Which Ordinate projects do I have access to?",
+              "tools_triggered": "listProjects",
+              "expected_behavior": "Returns the projects in the test account by name. Makes no changes in Ordinate."
+            },
+            {
+              "description": "Give a weekly status update for one project from its context, meeting reports, worklist and schedule.",
+              "prompt": "Give me a weekly status update for my first Ordinate project.",
+              "tools_triggered": "listProjects, getProjectContext, searchDocuments, readDocumentPage, queryAiduWorklist, querySchedule",
+              "expected_behavior": "Picks the project, reads its context, and gives a short status update with progress, open actions and upcoming milestones. Each claim cites the Ordinate document, worklist item or schedule activity behind it, and the answer says which sources it could not read."
+            },
+            {
+              "description": "Answer a question from project email correspondence.",
+              "prompt": "Summarise the latest email correspondence about the facade on my Ordinate project.",
+              "tools_triggered": "listProjects, getProjectContext, searchEmails, readEmailThread",
+              "expected_behavior": "Finds the relevant email threads, reads them, and summarises who said what and when, with the sender and date of each message cited. If there are no matches, it says nothing was found in the emails searched."
+            },
+            {
+              "description": "Check upcoming programme activities and procurement deliveries.",
+              "prompt": "What activities and material deliveries are due on my Ordinate project in the next four weeks?",
+              "tools_triggered": "listProjects, querySchedule, queryProcurement",
+              "expected_behavior": "Lists programme activities and procurement items with dates in the next four weeks, keeps planned and actual dates separate, and cites each schedule activity or procurement record."
+            },
+            {
+              "description": "Find drawings and a contract clause.",
+              "prompt": "Find the latest architectural floor plan drawings and the contract clause on extensions of time for my Ordinate project.",
+              "tools_triggered": "listProjects, searchDrawings, searchContracts, inspectDocument",
+              "expected_behavior": "Returns matching drawings from the drawing register with numbers and revisions, and quotes or summarises the extension-of-time clause with its contract reference."
+            }
+          ],
+          "negative": [
+            {
+              "description": "Write action. All tools are read-only, so the plugin must not claim to change data.",
+              "prompt": "Mark all open actions on my Ordinate project as closed."
+            },
+            {
+              "description": "Sending email. The plugin cannot send or reply to email; it should say so and can offer a draft instead.",
+              "prompt": "Reply to the contractor's latest email and approve their variation claim."
+            },
+            {
+              "description": "Unrelated request. The plugin should not call Ordinate tools for questions unrelated to the user's projects.",
+              "prompt": "What is the weather in Singapore tomorrow?"
+            }
+          ]
+        },
+        "commerce": false,
+        "commerce_description": "Ordinate does not sell products or process payments in ChatGPT."
+      },
+      "publication": {
+        "release_notes": "Initial release: read-only access to Ordinate construction projects, including documents, email, drawings, programme, procurement, worklist, authority submissions, contracts and standards, plus a skill that guides cited project answers."
       }
     }
   }
