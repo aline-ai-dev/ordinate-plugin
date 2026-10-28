@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "ordinate",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Answer questions about your construction projects in Ordinate, across documents, email, drawings and schedules, with citations. All tools are read-only.",
   "author": {
     "name": "Aline AI",
@@ -46,28 +46,28 @@
               "expected_behavior": "Returns the projects in the test account by name. Makes no changes in Ordinate."
             },
             {
-              "description": "Give a weekly status update for one project from its context, meeting reports, worklist and schedule.",
-              "prompt": "Give me a weekly status update for my first Ordinate project.",
-              "tools_triggered": "listProjects, getProjectContext, searchDocuments, readDocumentPage, queryAiduWorklist, querySchedule",
-              "expected_behavior": "Picks the project, reads its context, and gives a short status update with progress, open actions and upcoming milestones. Each claim cites the Ordinate document, worklist item or schedule activity behind it, and the answer says which sources it could not read."
+              "description": "Give a status update for the test project from its latest coordination meeting report and worklist.",
+              "prompt": "Give me a status update for Project Alder from its latest coordination meeting and open worklist items.",
+              "tools_triggered": "listProjects, getProjectContext, searchDocuments, readDocumentPage, queryAiduWorklist",
+              "expected_behavior": "Reads Weekly Coordination Meeting 03 - MEP Close-Up (22 July 2026) and the worklist. Reports that Zones A and B are proceeding with ceiling close-up and Zone C is on hold pending the sprinkler and linear-light clash, lists open worklist items with their status, and cites the meeting report and worklist items. States that the latest records are from July 2026."
             },
             {
-              "description": "Answer a question from project email correspondence.",
-              "prompt": "Summarise the latest email correspondence about the facade on my Ordinate project.",
-              "tools_triggered": "listProjects, getProjectContext, searchEmails, readEmailThread",
-              "expected_behavior": "Finds the relevant email threads, reads them, and summarises who said what and when, with the sender and date of each message cited. If there are no matches, it says nothing was found in the emails searched."
+              "description": "Trace an issue across meeting reports, filed email records and the worklist.",
+              "prompt": "What is the history of the Zone C ceiling clash on Project Alder, and what is still blocking it?",
+              "tools_triggered": "listProjects, searchDocuments, inspectDocument, readDocumentPage, queryAiduWorklist",
+              "expected_behavior": "Finds the email record Zone C ceiling clash - relocation dimensions required and the meeting reports that mention the clash, orders the events by date, and identifies the blocked worklist item for the Zone C ceiling close-up. Each step cites its document or worklist item."
             },
             {
-              "description": "Check upcoming programme activities and procurement deliveries.",
-              "prompt": "What activities and material deliveries are due on my Ordinate project in the next four weeks?",
-              "tools_triggered": "listProjects, querySchedule, queryProcurement",
-              "expected_behavior": "Lists programme activities and procurement items with dates in the next four weeks, keeps planned and actual dates separate, and cites each schedule activity or procurement record."
+              "description": "List open worklist actions with exact statuses and due dates.",
+              "prompt": "List the open actions on Project Alder with their status and due dates.",
+              "tools_triggered": "listProjects, queryAiduWorklist",
+              "expected_behavior": "Lists the five open worklist actions by due date, such as Circulate the ceiling close-up tracker (in progress, due 23 July 2026) and Issue the revised access-control door schedule (to do, due 24 July 2026), with owners and the exact worklist status. Notes that the due dates have passed and the statuses may be stale, and does not mark any item as resolved."
             },
             {
-              "description": "Find drawings and a contract clause.",
-              "prompt": "Find the latest architectural floor plan drawings and the contract clause on extensions of time for my Ordinate project.",
-              "tools_triggered": "listProjects, searchDrawings, searchContracts, inspectDocument",
-              "expected_behavior": "Returns matching drawings from the drawing register with numbers and revisions, and quotes or summarises the extension-of-time clause with its contract reference."
+              "description": "Search licensed building codes and cite the clause.",
+              "prompt": "Using only Ordinate, what does the SCDF Fire Code say about the duty to inspect regulated fire safety products used in fire safety works? Cite the clause.",
+              "tools_triggered": "searchBuildingCode",
+              "expected_behavior": "Returns the Fire Code 2023 (Code of Practice for Fire Precautions in Buildings) clause 11.7.1 on the duty to inspect regulated fire safety products, summarises it, and cites the clause number and code edition."
             }
           ],
           "negative": [
@@ -86,6 +86,7 @@
           ]
         },
         "commerce": false,
+        "demo_recording_url": "https://drive.google.com/file/d/1eitV4rNUVMOUwLX3QXA-cS-LF8iFUgr1/view?usp=sharing",
         "commerce_description": "Ordinate does not sell products or process payments in ChatGPT."
       },
       "publication": {

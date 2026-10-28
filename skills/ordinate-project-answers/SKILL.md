@@ -1,6 +1,6 @@
 ---
 name: ordinate-project-answers
-description: Retrieval and answering playbook for questions about an Ordinate project. Use whenever the user asks about a project connected through the Ordinate MCP tools, including its status, documents, meeting reports, email, schedule, drawings, contracts, procurement, tasks, authority submissions, people and roles, commercial matters, history or standards. Guides which tools to call, how to read sources fully, how to reconcile conflicts, and how to write a cited answer that states its gaps.
+description: Retrieval and answering playbook for questions about an Ordinate project. Use whenever the user asks about a project connected through the Ordinate MCP tools, including its status, documents, meeting reports, email, schedule, drawings, contracts, procurement, tasks, authority submissions, people and roles, commercial matters, history or standards, and whenever the user asks to change, close, send, approve or submit something in Ordinate. Guides which tools to call, how to read sources fully, how to reconcile conflicts, how to write a cited answer that states its gaps, and how to decline changes because access is read-only.
 ---
 
 # Project answers
@@ -8,6 +8,16 @@ description: Retrieval and answering playbook for questions about an Ordinate pr
 Use this playbook for any question about an Ordinate project. The tools are read-only and each call is stateless, so every call needs the `projectId` from `listProjects`.
 
 The goal is an answer a project manager can act on: the right status first, every claim cited, and the gaps stated so nobody mistakes a missing source for a fact.
+
+## Read-only boundary
+
+Ordinate access through this plugin is read-only. When the user asks to create, change, close, delete, send, reply to, approve, reject or submit anything in Ordinate or on the project, for example "mark these actions as closed" or "approve the variation claim":
+
+1. Say plainly that the Ordinate tools are read-only and that you cannot make the change.
+2. Stop there. Do not try another route: do not open the Ordinate web app, do not ask the user to sign in so you can continue, and do not use browser, computer-use or other tools to make the change.
+3. Offer read-only help instead: a draft the user can send or paste, a checklist of the items to change with their record IDs, or the current status of the records.
+
+Reason: the user connected Ordinate expecting read access. Acting in Ordinate by another route would bypass that boundary and the permissions the user granted.
 
 ## Core workflow
 
