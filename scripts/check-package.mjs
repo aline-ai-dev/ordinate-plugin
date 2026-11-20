@@ -139,6 +139,36 @@ function checkNoStagingUrl() {
   }
 }
 
+// The skill must name only tools the server lists. The README "Tools" section
+// is that list (kept equal to MCP_TOOL_NAMES in the ordinate repo, which CI
+// cannot read). A backticked camelCase word that starts like a tool verb and
+// is not in the list fails, so a server rename cannot leave the skill stale.
+const TOOL_VERB = /^(get|list|query|search|grep|read|inspect)[A-Z][A-Za-z]*$/;
+function backticked(text) {
+  return [...text.matchAll(/`([^`\s]+)`/g)].map((match) => match[1]);
+}
+function checkSkillToolNames() {
+  const readme = readFileSync("README.md", "utf8");
+  const section = readme.split(/^## Tools$/m)[1]?.split(/^## /m)[0];
+  if (!section) {
+    fail(`README.md: missing "## Tools" section`);
+    return;
+  }
+  const listed = new Set(backticked(section).filter((name) => TOOL_VERB.test(name)));
+  const files = execFileSync("git", ["ls-files", "--cached", "--others", "--exclude-standard", "-z", "skills"], {
+    encoding: "utf8",
+  })
+    .split("\0")
+    .filter((file) => file.endsWith(".md"));
+  for (const file of files) {
+    for (const name of new Set(backticked(readFileSync(file, "utf8")))) {
+      if (TOOL_VERB.test(name) && !listed.has(name)) {
+        fail(`${file}: names tool "${name}", which README.md "## Tools" does not list`);
+      }
+    }
+  }
+}
+
 const openAiPlugin = readJson("plugin.json");
 const openAiMcp = readJson("mcp.json");
 const claudePlugin = readJson(".claude-plugin/plugin.json");
@@ -153,6 +183,7 @@ if (openAiMcp) {
 if (claudeMcp) checkUrls(".mcp.json", claudeMcp);
 checkVersions(openAiPlugin, claudePlugin);
 checkNoStagingUrl();
+checkSkillToolNames();
 
 if (failures.length > 0) {
   console.error(`check-package: ${failures.length} problem(s)`);
