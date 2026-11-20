@@ -38,6 +38,7 @@ Use `listProjectOrganizations`, `listProjectPeople` and `listProjectContactEmail
 | Question is about | Start with | Then |
 | --- | --- | --- |
 | Overall status, weekly update | `getProjectDetails`, `getProjectInstructions`, then the stage search: `grepEmails` and `grepDocuments` with no date filter for "practical completion", "completion certificate", "TOP", "handover" and "defects" | Meeting reports via `searchDocuments`, `queryAiduWorklist`, `listScheduleMilestones`, `grepEmails` for the reporting period |
+| Stakeholders, who is who, roles | `listProjectOrganizations` and `listProjectPeople` | `grepEmails` or `searchEmails` for senders not in the directory; a directory-only answer is incomplete |
 | A document or report | `searchDocuments`, `listProjectDocuments` | `inspectDocument`, `readDocumentPage` |
 | An exact phrase, code or reference number | `grepDocuments`, `grepEmails` | Read the full source of each hit |
 | Email history or correspondence | `searchEmails`, `grepEmails` | `readEmailThread`, `readEmailMessage` |
