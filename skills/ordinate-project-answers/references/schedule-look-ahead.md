@@ -2,19 +2,19 @@
 
 Read this for programme questions, look-aheads, upcoming or overdue work, milestones and delays.
 
-## How `querySchedule` behaves
+## How the schedule tools behave
 
-The tool has five operations: `search_tasks` (by name), `upcoming_tasks` (a number of days ahead), `overdue_tasks`, `dependencies` (predecessors and successors of a named task) and `milestones`. Results come in pages with a default limit, so ask for a larger limit or narrow the query when the coverage says more rows matched.
+There are five schedule tools: `searchScheduleTasks` (by name), `listUpcomingScheduleTasks` (tasks finishing within `windowDays`), `listOverdueScheduleTasks`, `getScheduleTaskDependencies` (predecessors and successors of a named task) and `listScheduleMilestones`. Results come in pages with a default limit, so ask for a larger limit or narrow the query when the coverage says more rows matched.
 
 ## Look-ahead: widen the window
 
-`upcoming_tasks` returns only tasks that finish inside the window. A task that started earlier and finishes after the window, which is still active during it, is left out.
+`listUpcomingScheduleTasks` returns only tasks that finish inside the window. A task that started earlier and finishes after the window, which is still active during it, is left out.
 
 What to do, because a look-ahead that drops running work misleads site planning:
 
-1. Call `upcoming_tasks` with a window wider than the question asks (for example 90 days for a 2 to 4 week look-ahead).
+1. Call `listUpcomingScheduleTasks` with a `windowDays` wider than the question asks (for example 90 days for a 2 to 4 week look-ahead).
 2. Keep tasks whose dates overlap the requested period: start on or before the period ends, and finish on or after it starts.
-3. Also check `overdue_tasks`, since late tasks are often still in progress.
+3. Also check `listOverdueScheduleTasks`, since late tasks are often still in progress.
 4. Say in the answer that you applied this overlap rule.
 
 ## Check freshness before trusting dates
@@ -27,7 +27,7 @@ The schedule may be months behind the site. Signs: most tasks at 0% progress, or
 
 ## Matching tasks to the question
 
-- Task names often differ from the words used in email and meetings. Search synonyms and related terms with `search_tasks` (for example "ceiling", "soffit" and "bulkhead"), and check the location or zone words too.
+- Task names often differ from the words used in email and meetings. Search synonyms and related terms with `searchScheduleTasks` (for example "ceiling", "soffit" and "bulkhead"), and check the location or zone words too.
 - Summary rows are mixed in with real tasks. A summary row spans its children; do not count it as separate work or double count its dates.
 - There is no trade field. Infer the trade from the task name and say that it is inferred.
 
