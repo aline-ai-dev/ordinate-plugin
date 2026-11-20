@@ -10,7 +10,7 @@ No tool returns a variations or change register. Build the list from:
 - Email: `searchEmails` and `grepEmails` for the variation reference, the instruction, quotes and approvals. Read whole threads.
 - Meeting reports: commercial items and decisions recorded there.
 - Worklist: `queryAiduWorklist` with the decision and issue types.
-- Procurement: `queryProcurement` for item status, quotes received and approvals, with `item_evidence` for the sources behind an item.
+- Procurement: `listProcurementPipeline` and `getProcurementItemStatus` for item status, quotes received and approvals, with `getProcurementItemEvidence` for the sources behind an item.
 
 Say that the list is assembled from these sources and may be incomplete, because a missing variation can cost the client money.
 

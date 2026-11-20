@@ -27,9 +27,14 @@ All tools are read-only. None of them create, change or delete data in Ordinate.
 - Projects: `listProjects`
 - Documents: `searchDocuments`, `grepDocuments`, `inspectDocument`, `listProjectDocuments`, `readDocumentPage`
 - Email: `searchEmails`, `grepEmails`, `readEmailThread`, `readEmailMessage`
-- Project state and schedule: `querySchedule`, `queryProcurement`, `queryAiduWorklist`, `queryAuthoritySubmissions`, `getProjectContext`
+- Schedule: `searchScheduleTasks`, `listUpcomingScheduleTasks`, `listOverdueScheduleTasks`, `getScheduleTaskDependencies`, `listScheduleMilestones`
+- Procurement: `getProcurementItemStatus`, `listProcurementPipeline`, `getProcurementItemEvidence`
+- Project context: `getProjectDetails`, `listProjectOrganizations`, `listProjectPeople`, `listProjectContactEmails`, `getProjectInstructions`
+- Worklist and authorities: `queryAiduWorklist`, `queryAuthoritySubmissions`
 - Drawings and contracts: `searchDrawings`, `searchContracts`
-- Library and standards: `searchLibrary`, `listLibraryResources`, `searchBuildingCode`
+- Library and standards: `searchLibrary`, `listLibraryResources`, `searchBuildingCode`, `getBuildingCodeClause`
+
+This list is the source for the skill check: `scripts/check-package.mjs` fails when the skill names a tool that is not listed here. Keep it equal to `MCP_TOOL_NAMES` in the ordinate repo (`apps/web/server/mcp/tool-names.ts`).
 
 ## Skill
 
@@ -52,6 +57,10 @@ claude plugin validate .
 `scripts/check-package.mjs` validates `plugin.json` and `mcp.json` against the JSON Schemas they declare in `$schema` (fetched over the network, validated with Ajv), checks that every MCP server URL in `mcp.json` and `.mcp.json` is the production URL, checks that `version` is the same in `plugin.json` and `.claude-plugin/plugin.json`, and checks that no file outside `scripts/` mentions the staging host. OpenAI documents the OAuth settings under each server's `extensions["com.openai"]` in `mcp.json`, which the Agent Plugins 1.0.0 schema does not allow, so the script validates the server without that key and checks the key's exact value separately.
 
 The check dependencies live in `scripts/package.json`, not at the repository root: a `package.json` with a lockfile at the plugin root would make Claude Code install those packages for every user.
+
+### Staging build
+
+A push to the `staging` branch renders an `ordinate-staging` copy that points at the staging MCP server and pushes it to the private `aline-ai-dev/ordinate-plugin-internal` marketplace (`.github/workflows/render-staging.yml`). A push to `main` does not. Try a change on `staging` first, then merge it to `main` for the public package.
 
 ## License
 

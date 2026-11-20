@@ -27,22 +27,22 @@ Call `listProjects` and match the user's wording to one project. If two projects
 
 ### 2. Read the project context first
 
-Before searching, call `getProjectContext` with the `project` operation, then the `instructions` operation. Page the instructions with the returned cursor until there is no next cursor.
+Before searching, call `getProjectDetails`, then `getProjectInstructions`. Page the instructions with the returned cursor until there is no next cursor.
 
 Reason: project instructions often say which sources are authoritative, how the client wants updates written, and what stage the project is in. Skipping this step risks missing whole-project facts, such as a completion certificate or handover, that change the headline of the answer.
 
-Use the `organizations`, `people` and `emails` operations when the question involves parties or people (see the people reference below).
+Use `listProjectOrganizations`, `listProjectPeople` and `listProjectContactEmails` when the question involves parties or people (see the people reference below).
 
 ### 3. Choose tools by question type
 
 | Question is about | Start with | Then |
 | --- | --- | --- |
-| Overall status, weekly update | `getProjectContext`, meeting reports via `searchDocuments` | `queryAiduWorklist`, `querySchedule`, `searchEmails` |
+| Overall status, weekly update | `getProjectDetails`, `getProjectInstructions`, then the stage search: `grepEmails` and `grepDocuments` with no date filter for "practical completion", "completion certificate", "TOP", "handover" and "defects" | Meeting reports via `searchDocuments`, `queryAiduWorklist`, `listScheduleMilestones`, `grepEmails` for the reporting period |
 | A document or report | `searchDocuments`, `listProjectDocuments` | `inspectDocument`, `readDocumentPage` |
 | An exact phrase, code or reference number | `grepDocuments`, `grepEmails` | Read the full source of each hit |
 | Email history or correspondence | `searchEmails`, `grepEmails` | `readEmailThread`, `readEmailMessage` |
-| Programme, dates, look-ahead | `querySchedule` | Email and meeting reports for actual progress |
-| Materials, orders, deliveries | `queryProcurement` | `searchEmails` for supplier correspondence |
+| Programme, dates, look-ahead | `listUpcomingScheduleTasks`, `listOverdueScheduleTasks`, `listScheduleMilestones`, `searchScheduleTasks` | Email and meeting reports for actual progress |
+| Materials, orders, deliveries | `listProcurementPipeline`, `getProcurementItemStatus` | `searchEmails` for supplier correspondence |
 | Actions, issues, decisions | `queryAiduWorklist` | The source email or meeting report of each item |
 | Authority or regulatory submissions | `queryAuthoritySubmissions` | `searchEmails`, `searchDocuments` |
 | Drawings | `searchDrawings` | `inspectDocument` on the drawing register or transmittal |
