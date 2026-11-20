@@ -1,11 +1,12 @@
 name: render-staging
 
 # Pushes the ordinate-staging copy to the private internal marketplace on every
-# push to main. Never runs on pull requests, so forks never see the deploy key.
+# push to the staging branch, so a skill change can be tried on staging before
+# it reaches main. Never runs on pull requests, so forks never see the deploy key.
 on:
   push:
     branches:
-      - main
+      - staging
 
 permissions:
   contents: read
