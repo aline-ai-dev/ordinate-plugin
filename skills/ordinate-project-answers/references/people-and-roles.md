@@ -6,7 +6,7 @@ Read this for stakeholder maps, "who is responsible for", contact lists, and que
 
 1. Call `listProjectOrganizations`, then `listProjectPeople` for the organisations that matter. Page with the returned cursor until there is no next cursor. Use only organisation and person IDs that these calls return.
 2. `listProjectContactEmails` lists the contact emails linked to an organisation or person, which helps confirm who they are.
-3. Cross-check with `searchEmails` and `grepEmails` (sender filters help). The directory may not list every party active in the correspondence, and a party's role in practice can differ from its directory entry.
+3. Always cross-check with email before you answer, even when the directory looks complete. Run `searchEmails` for the project's recent correspondence and `grepEmails` with sender filters, and list every sender organisation that is not in the directory. The directory may not list every party active in the correspondence, such as the landlord, the building's own consultants or the client's facility operators, and a party's role in practice can differ from its directory entry.
 
 Reason: the correspondence shows who actually acts on the project. Report any party found in email but not in the directory, and any tier or role the two sources disagree on.
 
