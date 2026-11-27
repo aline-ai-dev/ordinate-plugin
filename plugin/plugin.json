@@ -4,7 +4,7 @@
   "version": "0.1.2",
   "description": "Answer questions about your construction projects in Ordinate, across documents, email, drawings and schedules, with citations. All tools are read-only.",
   "author": {
-    "name": "Aline AI",
+    "name": "Aline AI Pte Ltd",
     "url": "https://ordinate.app"
   },
   "homepage": "https://ordinate.app",
@@ -17,7 +17,7 @@
         "displayName": "Ordinate",
         "shortDescription": "Construction project answers",
         "longDescription": "Ordinate is a project intelligence platform for architecture, engineering and construction (AEC) teams. It connects a building project's documents, email, drawings, programme and registers so project managers, architects, engineers and contractors can get cited answers about the project.\n\nUse this plugin to ask about the status of your construction projects without leaving ChatGPT. It can:\n- List the Ordinate projects your account can access.\n- Search and read project documents, such as meeting reports, specifications and transmittals.\n- Search and read project email threads.\n- Query the construction programme (schedule), procurement and deliveries, the action and issue worklist, and authority (regulatory) submissions.\n- Search the drawing register and contract clauses.\n- Search your firm library, licensed standards and building codes.\n\nEvery answer cites the Ordinate records behind it and states what could not be read or verified.\n\nWho it is for: existing Ordinate customers whose organization has turned on MCP access in Ordinate. You sign in with your Ordinate account through OAuth, and the plugin sees only the projects that account can access. Accounts in organizations without MCP access see an empty project list with a note that explains why.\n\nLimitations: all tools are read-only. The plugin cannot create, change or delete data in Ordinate, send email, or approve or submit anything. It reads message text, not email attachments, unless the same file is also filed as a project document.",
-        "developerName": "Aline AI",
+        "developerName": "Aline AI Pte Ltd",
         "category": "Productivity",
         "capabilities": [
           "List your Ordinate construction projects",

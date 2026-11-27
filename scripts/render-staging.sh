@@ -68,7 +68,7 @@ write(path.join(pluginDir, ".claude-plugin/plugin.json"), claude);
 const source = `./plugins/${NAME}`;
 write(path.join(root, ".claude-plugin/marketplace.json"), {
   name: "ordinate-internal",
-  owner: { name: "Aline AI" },
+  owner: { name: "Aline AI Pte Ltd" },
   description: "Internal Ordinate plugins for testing against staging.",
   plugins: [{ name: NAME, source, description: DESCRIPTION }],
 });

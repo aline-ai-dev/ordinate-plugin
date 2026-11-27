@@ -1,10 +1,10 @@
 {
-  "name": "ordinate",
+  "name": "ordinate-app",
   "displayName": "Ordinate",
   "version": "0.1.2",
   "description": "Answer questions over your Ordinate projects' documents, email, drawings and schedules, with citations. All tools are read-only.",
   "author": {
-    "name": "Aline AI",
+    "name": "Aline AI Pte Ltd",
     "url": "https://ordinate.app"
   },
   "homepage": "https://ordinate.app",

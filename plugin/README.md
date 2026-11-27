@@ -8,7 +8,7 @@ The plugin is for existing Ordinate customers whose organization has MCP turned 
 
 ## Install
 
-In Claude, add Ordinate from the plugin directory on claude.ai or in Cowork. Claude Code loads it through account sync as `ordinate@synced`, so no install command is needed there.
+In Claude, add Ordinate from the plugin directory on claude.ai or in Cowork. Claude Code loads it through account sync as `ordinate-app@synced`, so no install command is needed there.
 
 ## What the plugin connects to
 
