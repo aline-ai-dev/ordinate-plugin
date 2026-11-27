@@ -1,5 +1,5 @@
 {
-  "name": "ordinateai",
+  "name": "ordinate",
   "displayName": "Ordinate",
   "version": "0.1.2",
   "description": "Answer questions over your Ordinate projects' documents, email, drawings and schedules, with citations. All tools are read-only.",
