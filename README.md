@@ -24,9 +24,10 @@ The check dependencies live in `scripts/package.json`, not in `plugin/`: a `pack
 
 `scripts/build-zip.sh` builds the OpenAI plugin ZIP from `plugin/` into `dist/`. A `v*` tag runs it in `.github/workflows/release.yml`.
 
-### Staging build
+### Branches
 
-A push to the `staging` branch renders an `ordinate-staging` copy that points at the staging MCP server and pushes it to the private `aline-ai-dev/ordinate-plugin-internal` marketplace (`.github/workflows/render-staging.yml`). A push to `main` does not. Try a change on `staging` first, then merge it to `main` for the public package.
+- `main`: development. Every push renders an `ordinate-staging` copy that points at the staging MCP server and pushes it to the private `aline-ai-dev/ordinate-plugin-internal` marketplace (`.github/workflows/render-staging.yml`). Try changes there first.
+- `release`: the public package. The Claude plugin directory submission tracks the `plugin/` folder on this branch. Promote a tested `main` by fast-forwarding `release` to it: `git push origin main:release`.
 
 ## License
 
