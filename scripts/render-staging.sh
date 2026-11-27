@@ -10,7 +10,7 @@ if [[ $# -ne 1 ]]; then
   exit 2
 fi
 
-src="$(cd "$(dirname "$0")/.." && pwd)"
+src="$(cd "$(dirname "$0")/../plugin" && pwd)"
 root="$1"
 plugin_dir="$root/plugins/ordinate-staging"
 

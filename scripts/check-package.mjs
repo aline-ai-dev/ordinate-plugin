@@ -1,8 +1,10 @@
 #!/usr/bin/env node
 // Package checks run in CI next to `claude plugin validate .`.
-// Run from the repo root: node scripts/check-package.mjs
+// Run from anywhere: node scripts/check-package.mjs
+// Checks the plugin/ folder, which is the folder submitted to the directories.
 import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 import { isDeepStrictEqual } from "node:util";
 import Ajv from "ajv";
 import Ajv2019 from "ajv/dist/2019.js";
@@ -26,6 +28,29 @@ const AJV_BY_META_SCHEMA = {
 
 const failures = [];
 const fail = (message) => failures.push(message);
+
+process.chdir(fileURLToPath(new URL("../plugin/", import.meta.url)));
+
+// git ls-files from plugin/ lists only plugin/ files, relative to it.
+function pluginFiles(...paths) {
+  return execFileSync("git", ["ls-files", "--cached", "--others", "--exclude-standard", "-z", ...paths], {
+    encoding: "utf8",
+  })
+    .split("\0")
+    .filter(Boolean);
+}
+
+// The Claude plugin directory refuses scripts, package-manager files and other
+// non-content files from organizations that are not Verified. Keep tooling in
+// scripts/ and .github/, outside plugin/.
+const ALLOWED_PLUGIN_FILE = /(^LICENSE$|\.md$|\.json$|\.png$)/;
+function checkPluginFiles() {
+  for (const file of pluginFiles()) {
+    if (!ALLOWED_PLUGIN_FILE.test(file) || /(^|\/)package(-lock)?\.json$/.test(file)) {
+      fail(`plugin/${file}: only Markdown, JSON (not package files), PNG and LICENSE may ship in plugin/`);
+    }
+  }
+}
 
 function readJson(path) {
   let text;
@@ -119,14 +144,7 @@ function checkVersions(openAiPlugin, claudePlugin) {
 // The staging URL is rendered by scripts/ only; the public package never
 // carries it. Lists tracked and untracked files, honouring .gitignore.
 function checkNoStagingUrl() {
-  const files = execFileSync(
-    "git",
-    ["ls-files", "--cached", "--others", "--exclude-standard", "-z"],
-    { encoding: "utf8" }
-  )
-    .split("\0")
-    .filter((file) => file && !file.startsWith("scripts/"));
-  for (const file of files) {
+  for (const file of pluginFiles()) {
     let content;
     try {
       content = readFileSync(file);
@@ -134,7 +152,7 @@ function checkNoStagingUrl() {
       continue; // deleted in the working tree but still in the index
     }
     if (content.includes(STAGING_MARKER)) {
-      fail(`${file}: contains "${STAGING_MARKER}"; only scripts/ may name staging`);
+      fail(`plugin/${file}: contains "${STAGING_MARKER}"; only scripts/ may name staging`);
     }
   }
 }
@@ -155,11 +173,7 @@ function checkSkillToolNames() {
     return;
   }
   const listed = new Set(backticked(section).filter((name) => TOOL_VERB.test(name)));
-  const files = execFileSync("git", ["ls-files", "--cached", "--others", "--exclude-standard", "-z", "skills"], {
-    encoding: "utf8",
-  })
-    .split("\0")
-    .filter((file) => file.endsWith(".md"));
+  const files = pluginFiles("skills").filter((file) => file.endsWith(".md"));
   for (const file of files) {
     for (const name of new Set(backticked(readFileSync(file, "utf8")))) {
       if (TOOL_VERB.test(name) && !listed.has(name)) {
@@ -182,6 +196,7 @@ if (openAiMcp) {
 }
 if (claudeMcp) checkUrls(".mcp.json", claudeMcp);
 checkVersions(openAiPlugin, claudePlugin);
+checkPluginFiles();
 checkNoStagingUrl();
 checkSkillToolNames();
 

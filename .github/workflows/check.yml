@@ -19,5 +19,5 @@ jobs:
           cache-dependency-path: scripts/package-lock.json
       - run: npm ci --prefix scripts
       - run: npm i -g @anthropic-ai/claude-code
-      - run: claude plugin validate .
+      - run: claude plugin validate plugin
       - run: node scripts/check-package.mjs

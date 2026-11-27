@@ -1,62 +1,28 @@
-# Ordinate
+# ordinate-plugin
 
-Ordinate answers questions over a project's documents, email, drawings and schedules with citations. This plugin connects Claude, ChatGPT and Codex to Ordinate so you can ask about your projects without leaving the assistant.
+Source for the Ordinate plugin for Claude, ChatGPT and Codex. The plugin itself is in [`plugin/`](plugin/); see [`plugin/README.md`](plugin/README.md) for what it does.
 
-## Who it is for
+## Layout
 
-The plugin is for existing Ordinate customers whose organization has MCP turned on in Ordinate. If your organization has not turned MCP on, you can still sign in, but the project list is empty and comes with a note explaining why.
-
-## Install
-
-In Claude, add Ordinate from the plugin directory on claude.ai or in Cowork. Claude Code loads it through account sync as `ordinate@synced`, so no install command is needed there.
-
-## What the plugin connects to
-
-The plugin bundles one skill, described under [Skill](#skill), and no code or hooks. It declares one remote MCP server:
-
-- Name: `ordinate`
-- URL: `https://go.ordinate.app/api/mcp`
-- Transport: streamable HTTP
-
-That server is the only thing the plugin calls. You sign in with your Ordinate account through OAuth when you first connect; the plugin stores no credentials or API keys. Every request runs as you and sees only the projects your Ordinate account can access.
-
-## Tools
-
-All tools are read-only. None of them create, change or delete data in Ordinate.
-
-- Projects: `listProjects`
-- Documents: `searchDocuments`, `grepDocuments`, `inspectDocument`, `listProjectDocuments`, `readDocumentPage`
-- Email: `searchEmails`, `grepEmails`, `readEmailThread`, `readEmailMessage`
-- Schedule: `searchScheduleTasks`, `listUpcomingScheduleTasks`, `listOverdueScheduleTasks`, `getScheduleTaskDependencies`, `listScheduleMilestones`
-- Procurement: `getProcurementItemStatus`, `listProcurementPipeline`, `getProcurementItemEvidence`
-- Project context: `getProjectDetails`, `listProjectOrganizations`, `listProjectPeople`, `listProjectContactEmails`, `getProjectInstructions`
-- Worklist and authorities: `queryAiduWorklist`, `queryAuthoritySubmissions`
-- Drawings and contracts: `searchDrawings`, `searchContracts`
-- Library and standards: `searchLibrary`, `listLibraryResources`, `searchBuildingCode`, `getBuildingCodeClause`
-
-This list is the source for the skill check: `scripts/check-package.mjs` fails when the skill names a tool that is not listed here. Keep it equal to `MCP_TOOL_NAMES` in the ordinate repo (`apps/web/server/mcp/tool-names.ts`).
-
-## Skill
-
-The `ordinate-project-answers` skill lives in `skills/ordinate-project-answers/`. It guides the assistant when you ask about an Ordinate project: read the project context first, gather evidence across Ordinate's tools, cite the record IDs behind each claim, and state what it could not read or verify.
-
-## Support
-
-For help, see https://ordinate.app/support or email hello@aline.sg. The privacy policy is at https://ordinate.app/privacy and the terms of service are at https://ordinate.app/terms.
+- `plugin/`: the plugin package. Submit this folder to the Claude plugin directory, not the repository root. It holds only Markdown, JSON, PNG and `LICENSE`: the directory refuses scripts, package-manager files and CI files from organizations that are not Verified.
+- `scripts/`: checks, the OpenAI ZIP build and the staging render. Not part of the plugin.
+- `.github/workflows/`: CI.
 
 ## Development
 
-The package has no build step. Two checks run in CI (`.github/workflows/check.yml`) and can be run locally from the repository root with Node.js 22 or later:
+The package has no build step. Two checks run in CI (`.github/workflows/check.yml`) and can be run locally with Node.js 22 or later:
 
 ```bash
 npm ci --prefix scripts
 node scripts/check-package.mjs
-claude plugin validate .
+claude plugin validate plugin
 ```
 
-`scripts/check-package.mjs` validates `plugin.json` and `mcp.json` against the JSON Schemas they declare in `$schema` (fetched over the network, validated with Ajv), checks that every MCP server URL in `mcp.json` and `.mcp.json` is the production URL, checks that `version` is the same in `plugin.json` and `.claude-plugin/plugin.json`, and checks that no file outside `scripts/` mentions the staging host. OpenAI documents the OAuth settings under each server's `extensions["com.openai"]` in `mcp.json`, which the Agent Plugins 1.0.0 schema does not allow, so the script validates the server without that key and checks the key's exact value separately.
+`scripts/check-package.mjs` checks `plugin/`. It validates `plugin.json` and `mcp.json` against the JSON Schemas they declare in `$schema` (fetched over the network, validated with Ajv), checks that every MCP server URL in `mcp.json` and `.mcp.json` is the production URL, checks that `version` is the same in `plugin.json` and `.claude-plugin/plugin.json`, checks that no file in `plugin/` mentions the staging host, checks that `plugin/` holds only Markdown, JSON (not package files), PNG and `LICENSE`, and checks that the skill names only tools listed under "## Tools" in `plugin/README.md`. Keep that list equal to `MCP_TOOL_NAMES` in the ordinate repo (`apps/web/server/mcp/tool-names.ts`). OpenAI documents the OAuth settings under each server's `extensions["com.openai"]` in `mcp.json`, which the Agent Plugins 1.0.0 schema does not allow, so the script validates the server without that key and checks the key's exact value separately.
 
-The check dependencies live in `scripts/package.json`, not at the repository root: a `package.json` with a lockfile at the plugin root would make Claude Code install those packages for every user.
+The check dependencies live in `scripts/package.json`, not in `plugin/`: a `package.json` with a lockfile in the plugin would make Claude Code install those packages for every user.
+
+`scripts/build-zip.sh` builds the OpenAI plugin ZIP from `plugin/` into `dist/`. A `v*` tag runs it in `.github/workflows/release.yml`.
 
 ### Staging build
 
@@ -64,4 +30,4 @@ A push to the `staging` branch renders an `ordinate-staging` copy that points at
 
 ## License
 
-The manifests, scripts and text in this repository are licensed under the MIT License; see `LICENSE`. The Ordinate name and icons are trademarks of Aline AI and are not licensed under MIT.
+MIT; see [`plugin/LICENSE`](plugin/LICENSE). The Ordinate name and icons are trademarks of Aline AI and are not licensed under MIT.

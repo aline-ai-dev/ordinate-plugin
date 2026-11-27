@@ -4,13 +4,13 @@
 # Usage: scripts/build-zip.sh  ->  dist/ordinate-<version>.zip
 set -euo pipefail
 
-cd "$(dirname "$0")/.."
+cd "$(dirname "$0")/../plugin"
 
 FILES=(plugin.json mcp.json assets skills README.md LICENSE)
 version="$(node -p 'require("./plugin.json").version')"
 out="dist/ordinate-${version}.zip"
 
-mkdir -p dist
-rm -f "$out"
-zip -r -X -q "$out" "${FILES[@]}" -x '*.DS_Store'
+mkdir -p ../dist
+rm -f "../$out"
+zip -r -X -q "../$out" "${FILES[@]}" -x '*.DS_Store'
 echo "$out"
